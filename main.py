@@ -5,8 +5,66 @@ import plotly.graph_objects as go
 
 st.set_page_config(page_title="VisWalis", page_icon="🧹", layout="centered")
 
-st.sidebar.image("VisWalis-logo.png", width=220)
-st.sidebar.write("### Upload a CSV file")
+st.markdown(
+    """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Ubuntu+Sans:ital,wght@0,100..800;1,100..800&display=swap');
+        [data-testid="stAppViewContainer"], .css-1outpf7 {
+            background-color: #F5F5F5;
+            color: black;
+        }
+
+        [data-testid="stSidebar"] {
+            background-color: #ffffff;
+            color: black !important;
+        }
+
+        .separator-line {
+            border-top: 2px solid #2C6777;
+            margin: 20px 0;
+        }
+
+        .logo-text {
+            display: flex;
+            vertical-align: bottom;
+            line-height: 2.15;
+        }
+
+        .logo {
+            width: 50px;
+            margin-right: 10px;
+        }
+
+        .viswalis-text {
+            font-family: "Kaushan Script", cursive;
+            font-weight: 400;
+            font-size: 40px;
+            font-style: normal;
+            color: #2C6777;
+        }
+        .ubuntu-sans{
+            font-family: "Ubuntu Sans", sans-serif;
+            font-weight: bold;
+            font-size: 23px;
+            }
+        .ubuntu-sans2{
+            font-family: "Ubuntu Sans", sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+with st.sidebar:
+
+    st.image("VisWalis-logo.png", width=220)
+    st.write('<p class ="ubuntu-sans">🧹Brushing Off the Mess, 🌟Visualizing Success!</p>', unsafe_allow_html=True)
+    st.write('<p class ="ubuntu-sans2">VisWalis simplifies data analysis. Upload a CSV, let us clean it, and explore interactive visualizations.</p>', unsafe_allow_html=True)
+    st.markdown('<div class="separator-line"></div>', unsafe_allow_html=True)
+    st.write("### Upload a CSV file")
+    
 uploaded_file = st.sidebar.file_uploader("Drag and drop file here", type="csv", help="Limit 200MB per file • CSV")
 
 def clean_data(df):

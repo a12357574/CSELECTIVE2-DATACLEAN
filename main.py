@@ -12,10 +12,14 @@ uploaded_file = st.sidebar.file_uploader("Drag and drop file here", type="csv", 
 def clean_data(df):
     """Applies basic data cleaning techniques."""
     df = df.copy()
-    # 1. Remove Duplicates
+
+    # 1. Remove completely empty rows
+    df.dropna(how="all", inplace=True)
+
+    # 2. Remove duplicates
     df.drop_duplicates(inplace=True)
 
-    # 2. Handle missing values
+    # 3. Handle missing values
     for col in df.columns:
         if df[col].dtype in ["float64", "int64"]:
             # Fill numeric columns with the mean
@@ -24,7 +28,7 @@ def clean_data(df):
             # Fill categorical columns with the mode
             df[col].fillna(df[col].mode()[0] if not df[col].mode().empty else "Unknown", inplace=True)
 
-    # 3. Remove outliers using IQR
+    # 4. Remove outliers using IQR
     numeric_cols = df.select_dtypes(include=["float64", "int64"]).columns
     for col in numeric_cols:
         Q1 = df[col].quantile(0.25)
@@ -34,15 +38,18 @@ def clean_data(df):
         upper_bound = Q3 + 1.5 * IQR
         df = df[(df[col] >= lower_bound) & (df[col] <= upper_bound)]
 
-    # 4. Trim whitespace from strings
+    # 5. Trim whitespace from strings
     string_cols = df.select_dtypes(include=["object", "string"]).columns
     for col in string_cols:
         df[col] = df[col].str.strip()
 
-    # 5. Checkng for correct data types
+    # 6. Checkng for correct data types
     for col in numeric_cols:
         df[col] = pd.to_numeric(df[col], errors="coerce")
         df[col].fillna(0, inplace=True)  # Replace any coerced NaN with 0
+    
+    # 7. Reset index for consistency in display
+    df.reset_index(drop=True, inplace=True)
     
     return df
 
